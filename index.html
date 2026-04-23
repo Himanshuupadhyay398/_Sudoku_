@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zen Sudoku | Premium Puzzle Experience</title>
+    <meta name="description" content="A beautiful, premium light-themed Sudoku game.">
+    <!-- Google Fonts for typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <h1>Sudoku</h1>
+            <p class="subtitle">A premium logic experience</p>
+        </header>
+
+        <main class="game-container">
+            <div class="controls-top">
+                <div class="difficulty-selector">
+                    <button class="diff-btn active" data-diff="easy" aria-label="Easy difficulty">Easy</button>
+                    <button class="diff-btn" data-diff="medium" aria-label="Medium difficulty">Medium</button>
+                    <button class="diff-btn" data-diff="hard" aria-label="Hard difficulty">Hard</button>
+                </div>
+                <div class="timer" aria-label="Game timer">00:00</div>
+            </div>
+
+            <div class="board-wrapper">
+                <div id="sudoku-board" class="sudoku-board"></div>
+                <div class="game-over-overlay hidden">
+                    <h2 class="congrats-text">Puzzle Solved!</h2>
+                    <p class="time-taken">Time: <span id="final-time"></span></p>
+                    <button id="new-game-btn" class="primary-btn">Play Again</button>
+                </div>
+            </div>
+
+            <div class="controls-bottom">
+                <div class="numpad" id="numpad">
+                    <!-- Numpad buttons injected by JS -->
+                </div>
+                <div class="action-buttons">
+                    <button id="btn-undo" class="action-btn" aria-label="Undo last move">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10h10a5 5 0 0 1 5 5v2a5 5 0 0 1-5 5H3m0-12 4 4m-4-4 4-4"/></svg>
+                        <span>Undo</span>
+                    </button>
+                    <button id="btn-erase" class="action-btn" aria-label="Erase selected cell">
+                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 5H9l-7 7 7 7h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Z"/><path d="m18 9-6 6M12 9l6 6"/></svg>
+                        <span>Erase</span>
+                    </button>
+                    <button id="btn-hint" class="action-btn" aria-label="Get a hint">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>
+                        <span>Hint</span>
+                    </button>
+                     <button id="btn-solve" class="action-btn solve-btn" aria-label="Auto-solve puzzle">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></svg>
+                        <span>Solve</span>
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

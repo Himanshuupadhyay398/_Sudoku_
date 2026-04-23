@@ -1,0 +1,378 @@
+:root {
+    /* Premium Light Theme Colors */
+    --bg-color: #f4f7f6;
+    --card-bg: #ffffff;
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+    
+    /* Interactive */
+    --primary: #3b82f6;
+    --primary-hover: #2563eb;
+    --secondary: #f1f5f9;
+    --secondary-hover: #e2e8f0;
+    
+    /* Board Styling */
+    --border-color: #cbd5e1;
+    --board-border: #1e293b;
+    
+    /* Cell Colors */
+    --cell-bg: #ffffff;
+    --cell-selected: #bfdbfe; /* Stronger highlight for the active cell */
+    --cell-highlight: #e0f2fe; /* Light highlight for same row/col/box */
+    --cell-error: #fee2e2;
+    --cell-error-text: #dc2626;
+    
+    /* Typography Colors */
+    --fixed-text: #0f172a;
+    --user-text: #2563eb;
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 1rem;
+    overflow-x: hidden;
+}
+
+.app-container {
+    width: 100%;
+    max-width: 480px;
+    background: var(--card-bg);
+    border-radius: 24px;
+    padding: 2.5rem 2rem;
+    box-shadow: var(--shadow-lg);
+    animation: fadeIn 0.5s ease-out;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+h1 {
+    font-size: 2.25rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    color: var(--text-main);
+    margin-bottom: 0.25rem;
+}
+
+.subtitle {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+}
+
+.controls-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.difficulty-selector {
+    display: flex;
+    background: var(--secondary);
+    border-radius: 99px;
+    padding: 0.35rem;
+}
+
+.diff-btn {
+    background: transparent;
+    border: none;
+    padding: 0.5rem 0.8rem;
+    border-radius: 99px;
+    font-family: inherit;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.diff-btn.active {
+    background: var(--card-bg);
+    color: var(--primary);
+    box-shadow: var(--shadow-sm);
+}
+
+.timer {
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    font-size: 1.125rem;
+    color: var(--text-main);
+    background: var(--secondary);
+    padding: 0.4rem 1rem;
+    border-radius: 99px;
+}
+
+.board-wrapper {
+    position: relative;
+    margin-bottom: 2rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow-md);
+    background-color: var(--board-border);
+}
+
+.sudoku-board {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    grid-template-rows: repeat(9, 1fr);
+    gap: 0;
+    border: 3px solid var(--board-border);
+    border-radius: 12px;
+    overflow: hidden;
+    aspect-ratio: 1 / 1;
+}
+
+.cell {
+    background-color: var(--cell-bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--user-text);
+    cursor: pointer;
+    transition: background-color 0.15s ease, transform 0.1s ease;
+    user-select: none;
+    outline: none;
+}
+
+/* Nifty internal borders */
+.cell {
+    border-right: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+}
+.cell:nth-child(3n) {
+    border-right: 2px solid var(--board-border);
+}
+.cell:nth-child(9n) {
+    border-right: none;
+}
+.sudoku-board .cell:nth-child(n+19):nth-child(-n+27),
+.sudoku-board .cell:nth-child(n+46):nth-child(-n+54) {
+    border-bottom: 2px solid var(--board-border);
+}
+.sudoku-board .cell:nth-child(n+73):nth-child(-n+81) {
+    border-bottom: none;
+}
+
+/* Cell Visual States */
+.cell.fixed {
+    color: var(--fixed-text);
+    font-weight: 700;
+    cursor: default;
+}
+
+.cell.selected {
+    background-color: var(--cell-selected) !important;
+}
+
+.cell.highlighted {
+    background-color: var(--cell-highlight);
+}
+
+.cell.error {
+    background-color: var(--cell-error);
+    color: var(--cell-error-text);
+}
+
+/* Glassmorphism Game Over Overlay */
+.game-over-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 12px;
+    z-index: 10;
+    opacity: 1;
+    transition: opacity 0.4s ease;
+}
+
+.game-over-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.congrats-text {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, var(--primary), #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.time-taken {
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+}
+
+.primary-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 0.8rem 2.25rem;
+    border-radius: 99px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 14px 0 rgba(59, 130, 246, 0.39);
+    transition: all 0.2s ease;
+}
+.primary-btn:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+}
+.primary-btn:active {
+    transform: translateY(1px);
+}
+
+/* Numpad & Actions */
+.controls-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.numpad {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    gap: 0.5rem;
+}
+
+.num-btn {
+    aspect-ratio: 1 / 1.1;
+    background: var(--secondary);
+    border: none;
+    border-radius: 10px;
+    font-size: 1.25rem;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    color: var(--text-main);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.num-btn:hover {
+    background: var(--secondary-hover);
+    transform: scale(1.05) translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.num-btn:active {
+    transform: scale(0.95);
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+.action-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    background: transparent;
+    border: 2px solid var(--secondary);
+    border-radius: 14px;
+    padding: 0.75rem 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.action-btn svg {
+    width: 22px;
+    height: 22px;
+    stroke-width: 2.5;
+}
+
+.action-btn:hover {
+    background: var(--secondary);
+    color: var(--text-main);
+    border-color: var(--border-color);
+    transform: translateY(-2px);
+}
+
+.action-btn.solve-btn {
+    background: #ecfdf5;
+    border-color: #a7f3d0;
+    color: #059669;
+}
+
+.action-btn.solve-btn:hover {
+    background: #d1fae5;
+    border-color: #34d399;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+    100% { transform: scale(1); }
+}
+
+.cell.pop {
+    animation: pop 0.2s ease-out;
+}
+
+/* Responsive Handling */
+@media (max-width: 480px) {
+    .app-container {
+        padding: 1.5rem 1rem;
+        border-radius: 16px;
+    }
+    .numpad {
+        gap: 0.35rem;
+    }
+    .num-btn {
+        font-size: 1.1rem;
+        border-radius: 8px;
+    }
+    .cell {
+        font-size: 1.15rem;
+    }
+    .diff-btn {
+        padding: 0.4rem 0.6rem;
+    }
+}
